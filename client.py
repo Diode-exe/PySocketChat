@@ -108,6 +108,7 @@ class Client:
         try:
             self.clientSocket.send(msg.encode(Settings.MESSAGE_ENCODING))
             self.inputArea.delete(0, END)
+            self.displayMessage(msg)
         except Exception as e:
             logging.error(f'Error occured when sending message: {e}.', exc_info=Settings.EXCEPTIONS_INFO)
 

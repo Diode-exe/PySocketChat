@@ -1,20 +1,15 @@
-#!/usr/bin/env python3
+# config.py - Complete configuration file
 
 class Settings:
-    '''
-        Configuration Class.
-        Be Careful modifying those values.
-    '''
+    # Server Configuration
+    SERVER_ADDRESS = "192.168.0.109"  # Change this to your server's IP
+    SERVER_PORT = 12500                # Change this to your desired port
+    SERVER_NAME = "PySocket Chat"
+    MAX_NUMBER_OF_CLIENTS = 10        # Maximum simultaneous clients
     
-    SERVER_NAME: str = 'Unibo Project Server'
-    SERVER_ADDRESS: str = '127.0.0.1'
-    SERVER_PORT: int = 12500
-
-    NUMBER_OF_CLIENTS: int = 3
-    MAX_NUMBER_OF_CLIENTS: int = 10
-
-    BUFFER_SIZE: int = 1024
-
-    MESSAGE_ENCODING: str = "utf8"
-
-    EXCEPTIONS_INFO: bool = False
+    # Message Configuration
+    BUFFER_SIZE = 1024
+    MESSAGE_ENCODING = "utf-8"
+    
+    # Debug Configuration
+    EXCEPTIONS_INFO = True
