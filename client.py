@@ -3,6 +3,7 @@
 import socket
 import threading
 import logging
+from datetime import datetime
 
 from tkinter import *
 from tkinter import ttk, scrolledtext
@@ -63,6 +64,12 @@ class Client:
             self.clientSocket.close()
             root.destroy()
 
+    def getCurrentTime(self):
+        '''
+            Get current time formatted for messages.
+        '''
+        current_time = datetime.now()
+        return current_time.strftime("%I:%M:%S %p")  # 03:30:45 PM
 
     def manageMessage(self, connection: socket.socket):
         '''
@@ -83,7 +90,6 @@ class Client:
                 connection.close()
                 break
 
-
     def displayMessage(self, msg: str):
         '''
             Display received messages to the client's GUI.
@@ -95,23 +101,33 @@ class Client:
         self.messageArea.configure(state='disabled')
         self.messageArea.yview(END)
 
-
     def sendMessage(self, event: None = None):
         '''
-            Send message to the server.
+            Send message to the server with timestamp.
         '''
         
-        # Get the message entry and send it as an encoded message.
-        msg = self.inputArea.get()
-        if not msg:
+        # Get the message entry
+        user_message = self.inputArea.get().strip()
+        
+        if not user_message:
             return
+            
         try:
-            self.clientSocket.send(msg.encode(Settings.MESSAGE_ENCODING))
+            # Create timestamped message
+            timestamp = self.getCurrentTime()
+            # Format: [timestamp] user_message
+            timestamped_message = f"[{timestamp}] {user_message}"
+            
+            # Send the timestamped message to server
+            self.clientSocket.send(timestamped_message.encode(Settings.MESSAGE_ENCODING))
+            
+            # Clear input field
             self.inputArea.delete(0, END)
-            self.displayMessage(msg)
-        except Exception as e:
-            logging.error(f'Error occured when sending message: {e}.', exc_info=Settings.EXCEPTIONS_INFO)
 
+            self.displayMessage(timestamped_message)
+            
+        except Exception as e:
+            logging.error(f'Error occurred when sending message: {e}', exc_info=Settings.EXCEPTIONS_INFO)
 
     def closeConnection(self, event: None = None):
         '''
@@ -121,10 +137,9 @@ class Client:
         try:
             self.clientSocket.close()
         except Exception as e:
-            logging.error(f'Error occured while closing socket: {e}.', exc_info=Settings.EXCEPTIONS_INFO)
+            logging.error(f'Error occurred while closing socket: {e}', exc_info=Settings.EXCEPTIONS_INFO)
 
         self.root.quit()
-
 
     @staticmethod
     def startClientGUI():
@@ -135,7 +150,6 @@ class Client:
         root = Tk()
         Client(root)
         root.mainloop()
-
 
 if __name__ == "__main__":
     Client.startClientGUI()

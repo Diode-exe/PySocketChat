@@ -3,6 +3,7 @@
 import socket
 import threading
 import logging
+from collections import deque
 
 from config import Settings
 
@@ -38,6 +39,13 @@ class Server:
                     entryMessage = f'[{address[0]}:{address[1]}] has entered the server.'
                     Server.broadcast(entryMessage, serverConnection)
                     logging.info(entryMessage)
+
+                    last_messages = Server.getLastLines()
+                    for line in last_messages:
+                        try:
+                            serverConnection.send(f"[HISTORY] {line}\n".encode(Settings.MESSAGE_ENCODING))
+                        except Exception as e:
+                            logging.error(f'Error sending message history: {e}')
 
                     # Start Client management.                
                     threading.Thread(target=Server.manageClient, args=[serverConnection, address], daemon=True).start()
@@ -107,6 +115,18 @@ class Server:
                 file.write(f"{message}\n")
         except Exception as e:
             logging.error(f'Error writing to log file: {e}')
+    
+    @staticmethod
+    def getLastLines():
+        try:
+            with open("msgLog.txt", "r") as file:
+                last_five = deque(file, maxlen=5)  # Only keeps last 5 lines in memory
+                return [line.strip() for line in last_five]  # Add this return statement
+        except FileNotFoundError:
+            return []  # Return empty list if file doesn't exist
+        except Exception as e:
+            logging.error(f'Error reading message history: {e}')
+            return []  # Return empty list on error
 
     @staticmethod
     def broadcast(message: str, sender_connection: socket.socket) -> None:
@@ -122,6 +142,7 @@ class Server:
                 except Exception as e:
                     logging.error(f'Error occurred while broadcasting message to client {addr}: {e}.', exc_info=Settings.EXCEPTIONS_INFO)
                     Server.removeClient(clientConnection, addr)
+
 
     @staticmethod
     def removeClient(connection: socket.socket, address: str, broadcast: bool = True) -> None:
