@@ -15,4 +15,6 @@ Includes server and client.
 
 3. Run the server.py on your server and client.py on your client. Make sure to have matching config.py files between them. 
 
-4. msgLog.txt will be created on first message send. Self explanatory. 
+4. msgLog.txt will be created on first message send. Self explanatory.
+
+5. Don't use main.py, it's broken and really doesn't do anything. Feel free to fix it, though. 
