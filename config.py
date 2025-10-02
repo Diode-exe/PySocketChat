@@ -2,7 +2,7 @@
 
 class Settings:
     # Server Configuration
-    SERVER_ADDRESS = "192.168.0.109"  # Change this to your server's IP
+    SERVER_ADDRESS = "50.72.70.56"  # Change this to your server's IP
     SERVER_PORT = 12500                # Change this to your desired port
     SERVER_NAME = "Diode's server"
     MAX_NUMBER_OF_CLIENTS = 10        # Maximum simultaneous clients

@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 
 """
-    Traccia 1: Sistema di Chat Client-Server.
-    
-    Implementare un sistema di chat client-server in Python
-    utilizzando socket programming.
-    Il server deve essere in grado di gestire più client contemporaneamente
-    e deve consentire agli utenti di inviare
-    e ricevere messaggi in una chatroom condivisa.
-    Il client deve consentire agli utenti di connettersi al server,
-    inviare messaggi alla chatroom
-    e ricevere messaggi dagli altri utenti.
+    Track 1: Client-Server Chat System.
+
+    Implement a client-server chat system in Python
+    using socket programming.
+    The server must be able to handle multiple clients simultaneously
+    and must allow users to send
+    and receive messages in a shared chatroom.
+    The client must allow users to connect to the server,
+    send messages to the chatroom,
+    and receive messages from other users.
 """
 
 import threading

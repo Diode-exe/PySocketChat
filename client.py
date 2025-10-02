@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 
 from tkinter import *
-from tkinter import ttk, scrolledtext
+from tkinter import ttk, scrolledtext, messagebox
 
 from config import Settings
 
@@ -61,6 +61,7 @@ class Client:
 
         except Exception as e:
             logging.error(f'Error connecting to server socket: {e}', exc_info=Settings.EXCEPTIONS_INFO)
+            messagebox.showerror("Error", f'Error connecting to server socket: {e}')
             self.clientSocket.close()
             root.destroy()
 
@@ -87,6 +88,7 @@ class Client:
                     break
             except Exception as e:
                 logging.error(f'Error handling message from server: {e}', exc_info=Settings.EXCEPTIONS_INFO)
+                messagebox.showerror("Error", f'Error handling message from server: {e}')
                 connection.close()
                 break
 
@@ -101,7 +103,7 @@ class Client:
         self.messageArea.configure(state='disabled')
         self.messageArea.yview(END)
 
-    def sendMessage(self, event: None = None):
+    def sendMessage(self, event=None):
         '''
             Send message to the server with timestamp.
         '''
@@ -128,6 +130,7 @@ class Client:
             
         except Exception as e:
             logging.error(f'Error occurred when sending message: {e}', exc_info=Settings.EXCEPTIONS_INFO)
+            messagebox.showerror("Error", f'Error occurred when sending message: {e}')
 
     def closeConnection(self, event: None = None):
         '''
@@ -138,6 +141,7 @@ class Client:
             self.clientSocket.close()
         except Exception as e:
             logging.error(f'Error occurred while closing socket: {e}', exc_info=Settings.EXCEPTIONS_INFO)
+            messagebox.showerror("Error", f'Error occurred while closing socket: {e}')
 
         self.root.quit()
 
