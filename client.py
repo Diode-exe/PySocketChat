@@ -10,6 +10,8 @@ from tkinter import ttk, scrolledtext, messagebox
 
 from config import Settings
 
+import random
+
 '''
     Main process that start client connection to the server 
     and handle it's input messages
@@ -21,6 +23,13 @@ class Client:
         '''
             Initializes the Client and creates its GUI.
         '''
+        def giveUsername():
+            adjectives1 = ["compsci", "nerd", "kernel", "voltaic"]
+            adjectives2 = ["compsci", "nerd", "kernel", "voltaic"]
+            username = f"{random.choice(adjectives1)}{random.choice(adjectives2)}"
+            return username
+
+        username = giveUsername()
 
         try:
             logging.basicConfig(level=logging.NOTSET, format='[CLIENT - %(levelname)s] %(message)s') # Initialize Logging.
@@ -28,6 +37,7 @@ class Client:
             # Connects the Client to the Server.
             self.clientSocket = socket.socket()
             self.clientSocket.connect((Settings.SERVER_ADDRESS, Settings.SERVER_PORT))
+
 
             # Create the GUI Window.
             # Set it not resizable and the action on close button pressed.
@@ -118,7 +128,7 @@ class Client:
             # Create timestamped message
             timestamp = self.getCurrentTime()
             # Format: [timestamp] user_message
-            timestamped_message = f"[{timestamp}] {user_message}"
+            timestamped_message = f"[{timestamp}] {Client.username} {user_message}"
             
             # Send the timestamped message to server
             self.clientSocket.send(timestamped_message.encode(Settings.MESSAGE_ENCODING))

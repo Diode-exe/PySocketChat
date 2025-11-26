@@ -91,7 +91,8 @@ class Server:
             try:
                 receivedMessage = connection.recv(Settings.BUFFER_SIZE)
                 if receivedMessage:
-                    sendingMessage = f'[{address[0]}:{address[1]}] {receivedMessage.decode(Settings.MESSAGE_ENCODING)}'
+                    msg = receivedMessage.decode(Settings.MESSAGE_ENCODING, errors="replace")
+                    sendingMessage = f'[{address[0]}:{address[1]}] {msg}'
                     logging.info(sendingMessage)
                     Server.broadcast(sendingMessage, connection)
                     Server.writeToFile(sendingMessage)  # Log the message
